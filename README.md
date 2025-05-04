@@ -1,4 +1,9 @@
-Running the app: $npm run dev 
+  ## Pushing to prod: 
+     1. $npm run build 
+     2. vercel --prod 
+     3. Yay    
+
+### Running the app: $npm run dev 
 
 you can mae a postrequest to the render backend: 
 
@@ -12,6 +17,8 @@ or to local:
 curl -X POST http://localhost:8080/teily \
      -H "Content-Type: application/json" \
      -d '{"name":"Alpha"}'
+
+     
 
 
 
