@@ -1,3 +1,21 @@
+Running the app: $npm run dev 
+
+you can mae a postrequest to the render backend: 
+
+curl -X POST https://teily-backend-v1-latest.onrender.com/teily \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Alpha"}'
+
+
+
+or to local: 
+curl -X POST http://localhost:8080/teily \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Alpha"}'
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

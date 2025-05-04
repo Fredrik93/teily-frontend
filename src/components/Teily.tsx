@@ -4,7 +4,6 @@ const Teily = ({ task, key }: { task: string; key: number }) => {
     return (
         <Fragment>
             <li className="list-group-item list-group-item-info" key={key}>{task}</li>
-
         </Fragment>
     )
 }
