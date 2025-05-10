@@ -2,20 +2,24 @@ import { useEffect, useState, Fragment } from 'react';
 
 type Teily = {
     name: String
+    completed: boolean
 }
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [name, setName] = useState("");
+    const [completed, setCompleted] = useState(false)
 
     useEffect(() => {
         fetchList()
     }, []);
 
     const fetchList = async () => {
-        fetch('https://teily-backend-v1-latest.onrender.com/teily')
+        // fetch('https://teily-backend-v1-latest.onrender.com/teily')
+        fetch('http://localhost:8080/teily')
+
             .then(res => res.json())
             .then(data => {
-                // console.log("Fetched teilys", data)
+                console.log("Fetched teilys", data)
                 setTeilys(data)
             })
             .catch(err => console.error('Fetch error:', err));
@@ -24,9 +28,11 @@ function Teilys() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Teily object with name field
-        const teily = { name };
+        const teily = { name, completed };
         try {
-            const response = await fetch("https://teily-backend-v1-latest.onrender.com/teily", {
+            // const response = await fetch("https://teily-backend-v1-latest.onrender.com/teily", {
+            const response = await fetch("http://localhost:8080/teily", {
+
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -35,6 +41,7 @@ function Teilys() {
             });
             if (response.ok) {
                 setName("")
+                setCompleted(false)
                 await fetchList()
             } else {
                 const errorText = await response.text()
@@ -55,7 +62,7 @@ function Teilys() {
             <div>
                 <ul>
                     {teilys.map((t, i) => (
-                        <li key={i}>{t.name}</li>
+                        <li key={i}>  {t.name} - completed: {t.completed ? "Yes" : "No"}</li>
 
                     ))}
                 </ul>

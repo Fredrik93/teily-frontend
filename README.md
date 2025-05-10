@@ -5,7 +5,7 @@
 
 ### Running the app: $npm run dev 
 
-you can mae a postrequest to the render backend: 
+you can make a postrequest to the render backend: 
 
 curl -X POST https://teily-backend-v1-latest.onrender.com/teily \
      -H "Content-Type: application/json" \
