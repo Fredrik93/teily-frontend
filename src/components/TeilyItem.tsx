@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { Teily } from '../models/Teily';
 
 interface TeilyItemProps {
-    name: string;
-    completed: boolean;
+    teily: Teily;
 }
 
-const TeilyItem: React.FC<TeilyItemProps> = ({ name, completed }) => {
+const TeilyItem: React.FC<TeilyItemProps> = ({ teily }) => {
+    //destructure the teily object to get name and completed properties
+    const { name, completed } = teily;
+
     const [isCompleted, setIsCompleted] = useState(completed);
 
     const handleCheckboxChange = () => {

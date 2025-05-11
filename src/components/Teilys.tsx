@@ -1,6 +1,7 @@
 import { useEffect, useState, Fragment } from 'react';
-import { Teily } from './Teily';
+import { Teily } from '../models/Teily';
 import TeilyItem from './TeilyItem';
+import { fetchTeilys, createTeily } from '../services/TeilyService';
 
 
 function Teilys() {
@@ -8,48 +9,34 @@ function Teilys() {
     const [name, setName] = useState("");
     const [completed, setCompleted] = useState(false)
 
+    const getTeilys = async () => {
+        try {
+            const data = await fetchTeilys();
+            console.log("Fetched teilys", data);
+            setTeilys(data);
+        } catch (err) {
+            console.error("Component fetch error:", err);
+        }
+    };
+
     useEffect(() => {
-        fetchList()
+        getTeilys();
     }, []);
 
-    const fetchList = async () => {
-        // fetch('https://teily-backend-v1-latest.onrender.com/teily')
-        fetch('http://localhost:8080/teily')
 
-            .then(res => res.json())
-            .then(data => {
-                console.log("Fetched teilys", data)
-                setTeilys(data)
-            })
-            .catch(err => console.error('Fetch error:', err));
-
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Teily object with name field
         const teily = { name, completed };
-        try {
-            // const response = await fetch("https://teily-backend-v1-latest.onrender.com/teily", {
-            const response = await fetch("http://localhost:8080/teily", {
 
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(teily),
-            });
-            if (response.ok) {
-                setName("")
-                setCompleted(false)
-                await fetchList()
-            } else {
-                const errorText = await response.text()
-                console.error("Error: ", errorText)
-            }
+        try {
+            await createTeily(teily);  // Call the service method to create the Teily
+            setName("");
+            setCompleted(false);
+            await getTeilys();  // Refetch the list after adding a new teily
         } catch (error) {
-            console.error("error:", error)
+            console.error("Error creating teily:", error);
         }
-    }
+    };
 
     return (
         <Fragment>
@@ -60,9 +47,8 @@ function Teilys() {
             </form>
             <div>
 
-                {teilys.map((t, i) => (
-                    <TeilyItem key={i} name={t.name} completed={t.completed} />
-                    //<li key={i}>  {t.name} - completed: {t.completed ? "Yes" : "No"}</li>
+                {teilys.map((teily, i) => (
+                    <TeilyItem key={i} teily={teily} />
 
                 ))}
 
