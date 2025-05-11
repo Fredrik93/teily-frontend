@@ -1,9 +1,8 @@
 import { useEffect, useState, Fragment } from 'react';
+import { Teily } from './Teily';
+import TeilyItem from './TeilyItem';
 
-type Teily = {
-    name: String
-    completed: boolean
-}
+
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [name, setName] = useState("");
@@ -60,12 +59,13 @@ function Teilys() {
                 <button type="submit">Create</button>
             </form>
             <div>
-                <ul>
-                    {teilys.map((t, i) => (
-                        <li key={i}>  {t.name} - completed: {t.completed ? "Yes" : "No"}</li>
 
-                    ))}
-                </ul>
+                {teilys.map((t, i) => (
+                    <TeilyItem key={i} name={t.name} completed={t.completed} />
+                    //<li key={i}>  {t.name} - completed: {t.completed ? "Yes" : "No"}</li>
+
+                ))}
+
             </div>
         </Fragment>
     );
