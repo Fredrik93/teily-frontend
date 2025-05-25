@@ -1,11 +1,12 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Teily } from '../models/Teily';
 import TeilyItem from './TeilyItem';
-import { fetchTeilys, createTeily } from '../services/TeilyService';
+import { fetchTeilys, createTeily, updateTeily } from '../services/TeilyService';
 
 
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
+    const [id, setId] = useState("");
     const [name, setName] = useState("");
     const [completed, setCompleted] = useState(false)
 
@@ -23,10 +24,18 @@ function Teilys() {
         getTeilys();
     }, []);
 
+    const handleToggleCompleted = async (id: string, isCompleted: boolean) => {
+        try {
+            await updateTeily(id, isCompleted); // Call the service method to update the Teily
+            await getTeilys(); // Refetch the list after updating a teily
+        } catch (error) {
+            console.error("Error updating teily:", error);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const teily = { name, completed };
+        const teily = { id, name, completed };
 
         try {
             await createTeily(teily);  // Call the service method to create the Teily
@@ -48,7 +57,7 @@ function Teilys() {
             <div>
 
                 {teilys.map((teily, i) => (
-                    <TeilyItem key={i} teily={teily} />
+                    <TeilyItem key={i} teily={teily} onToggleCompleted={handleToggleCompleted} />
 
                 ))}
 

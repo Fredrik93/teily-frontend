@@ -3,31 +3,29 @@ import { Teily } from '../models/Teily';
 
 interface TeilyItemProps {
     teily: Teily;
+    onToggleCompleted: (id: string, isCompleted: boolean) => void; // Add callback prop
+
 }
 
-const TeilyItem: React.FC<TeilyItemProps> = ({ teily }) => {
+const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted }) => {
     //destructure the teily object to get name and completed properties
-    const { name, completed } = teily;
+    const { id, name, completed } = teily;
 
-    const [isCompleted, setIsCompleted] = useState(completed);
 
     const handleCheckboxChange = () => {
-        setIsCompleted(!isCompleted);
+        onToggleCompleted(id, !completed)
     };
 
     return (
+        console.log("id: ", id + " name: " + name + " completed: " + completed),
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
             <span
-                style={{
-                    textDecoration: isCompleted ? 'line-through' : 'none',
-                    marginRight: '8px',
-                }}
-            >
+                style={{ textDecoration: completed ? 'line-through' : 'none', marginRight: '8px' }}>
                 {name}
             </span>
             <input
                 type="checkbox"
-                checked={isCompleted}
+                checked={completed}
                 onChange={handleCheckboxChange}
             />
         </div>
