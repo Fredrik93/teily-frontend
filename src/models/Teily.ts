@@ -1,5 +1,5 @@
 export interface Teily {
     id: string;
-    name: string;
+    task: string;
     completed: boolean;
 }

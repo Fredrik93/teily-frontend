@@ -1,6 +1,6 @@
 import { Teily } from '../models/Teily';
 
-const API_URL = 'http://localhost:8080/teily';
+const API_URL = 'http://localhost:8080/teilys';
 
 
 // Fetch all teilys

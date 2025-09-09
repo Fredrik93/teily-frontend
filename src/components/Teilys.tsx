@@ -7,7 +7,7 @@ import { fetchTeilys, createTeily, updateTeily } from '../services/TeilyService'
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [id, setId] = useState("");
-    const [name, setName] = useState("");
+    const [task, setTask] = useState("");
     const [completed, setCompleted] = useState(false)
 
     const getTeilys = async () => {
@@ -35,11 +35,11 @@ function Teilys() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const teily = { id, name, completed };
+        const teily = { id, task, completed };
 
         try {
             await createTeily(teily);  // Call the service method to create the Teily
-            setName("");
+            setTask("");
             setCompleted(false);
             await getTeilys();  // Refetch the list after adding a new teily
         } catch (error) {
@@ -50,7 +50,7 @@ function Teilys() {
     return (
         <Fragment>
             <form onSubmit={handleSubmit} className='space-y-4'>
-                <input type="text" placeholder='A teily' value={name} onChange={(e) => setName(e.target.value)}
+                <input type="text" placeholder='A teily' value={task} onChange={(e) => setTask(e.target.value)}
                     required />
                 <button type="submit">Create</button>
             </form>
