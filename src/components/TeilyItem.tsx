@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Teily } from '../models/Teily';
+import deleteIcon from '../assets/delete.svg';
 
 interface TeilyItemProps {
     teily: Teily;
@@ -15,19 +16,40 @@ const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted }) => {
     const handleCheckboxChange = () => {
         onToggleCompleted(id, !completed)
     };
+    const handleDelete = () => {
+        console.log("this should delete the item")
+    }
 
     return (
-        console.log("id: ", id + " name: " + name + " completed: " + completed),
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
             <span
-                style={{ textDecoration: completed ? 'line-through' : 'none', marginRight: '8px' }}>
+                style={{
+                    textDecoration: completed ?
+                        'line-through' : 'none', marginRight: '8px'
+                }}>
                 {task}
             </span>
             <input
                 type="checkbox"
                 checked={completed}
                 onChange={handleCheckboxChange}
+                style={{ marginRight: '8px' }}
             />
+            <button
+                onClick={handleDelete}
+                style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginLeft: 'auto',
+                    marginRight: '2px'
+
+                }}
+                aria-label="Delete"
+                title="Delete"
+            >
+                <img src={deleteIcon} alt="Delete" width={20} height={20} />
+            </button>
         </div>
     );
 };

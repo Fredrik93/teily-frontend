@@ -1,6 +1,6 @@
 import { Teily } from '../models/Teily';
 
-const API_URL = 'http://localhost:8080/teilys';
+const API_URL = 'https://teily-backend.onrender.com/teilys';
 
 
 // Fetch all teilys
@@ -39,9 +39,8 @@ export const createTeily = async (teily: Teily) => {
     }
 };
 
-// ...existing code...
 
-// Update a teily's isCompleted status
+// Update a teily's isCompleted status. 
 export const updateTeily = async (id: string, isCompleted: boolean) => {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
