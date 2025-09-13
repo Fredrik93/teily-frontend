@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Teily } from '../models/Teily';
 import deleteIcon from '../assets/delete.svg';
 
 interface TeilyItemProps {
     teily: Teily;
     onToggleCompleted: (id: string, isCompleted: boolean) => void; // Add callback prop
+    onDelete: (id: string) => void
 
 }
 
-const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted }) => {
+const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelete }) => {
     //destructure the teily object to get name and completed properties
     const { id, task, completed } = teily;
 
@@ -16,8 +17,8 @@ const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted }) => {
     const handleCheckboxChange = () => {
         onToggleCompleted(id, !completed)
     };
-    const handleDelete = () => {
-        console.log("this should delete the item")
+    const handleDelete = async () => {
+        onDelete(id);
     }
 
     return (

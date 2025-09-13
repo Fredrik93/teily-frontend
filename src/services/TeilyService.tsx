@@ -67,3 +67,30 @@ export const updateTeily = async (id: string, isCompleted: boolean) => {
         throw error;
     }
 };
+
+export const deleteTeily = async (id: string) => {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        console.log("Teily deleted successfully: " + id);
+    } catch (error) {
+        console.error('Service delete error:', error);
+        throw error;
+    }
+};
+ export const getTeilys = async () => {
+        try {
+            const data = await fetchTeilys();
+            console.log("Fetched teilys", data);
+            return await data
+        } catch (err) {
+            console.error("Component fetch error:", err);
+        }
+    };

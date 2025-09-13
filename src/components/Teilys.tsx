@@ -1,7 +1,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Teily } from '../models/Teily';
 import TeilyItem from './TeilyItem';
-import { fetchTeilys, createTeily, updateTeily } from '../services/TeilyService';
+import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/TeilyService';
 
 
 function Teilys() {
@@ -24,6 +24,15 @@ function Teilys() {
         getTeilys();
     }, []);
 
+    const handleDelete = async (id: string) => {
+        try {
+            await deleteTeily(id)
+            await getTeilys()
+
+        } catch (error){
+            console.error("Error deleting teily: ", error)
+        }
+    }
     const handleToggleCompleted = async (id: string, isCompleted: boolean) => {
         try {
             await updateTeily(id, isCompleted); // Call the service method to update the Teily
@@ -57,7 +66,9 @@ function Teilys() {
             <div>
 
                 {teilys.map((teily, i) => (
-                    <TeilyItem key={i} teily={teily} onToggleCompleted={handleToggleCompleted} />
+                    <TeilyItem key={i} teily={teily} 
+                    onToggleCompleted={handleToggleCompleted}
+                    onDelete={handleDelete} />
 
                 ))}
 
