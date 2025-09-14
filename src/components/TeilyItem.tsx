@@ -11,10 +11,10 @@ interface TeilyItemProps {
 
 const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelete }) => {
     //destructure the teily object to get name and completed properties
-    const { id, task, isCompleted } = teily;
+    const { id, task, completed } = teily;
 
     const handleCheckboxChange = () => {
-        onToggleCompleted(id, !isCompleted)
+        onToggleCompleted(id, !completed)
     };
     const handleDelete = async () => {
         onDelete(id);
@@ -24,7 +24,7 @@ const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelet
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
             <span
                 style={{
-                    textDecoration: isCompleted ?
+                    textDecoration: completed ?
                         'line-through' : 'none', marginRight: '8px'
                 }}>
                 {task}
@@ -39,7 +39,7 @@ const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelet
             }}>
                 <input
                     type="checkbox"
-                    checked={isCompleted}
+                    checked={completed}
                     onChange={handleCheckboxChange}
 
                 />

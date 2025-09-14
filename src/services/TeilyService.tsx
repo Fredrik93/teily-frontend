@@ -1,9 +1,9 @@
-import { NewTeily, Teily } from '../models/Teily';
-
+import {  Teily } from '../models/Teily';
+import { NewTeily } from '../models/NewTeily';
 // The local environment 
-//const API_URL = 'http://localhost:8080/teilys'
+const API_URL = 'http://localhost:8080/teilys'
 // The test environment 
-const API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
+//const API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
 // The production environment 
 //const API_URL = 'https://teily-backend.onrender.com/teilys';
 
