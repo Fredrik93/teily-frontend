@@ -7,7 +7,7 @@ import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [task, setTask] = useState("");
-    const [completed, setCompleted] = useState(false)
+    const [isCompleted, setCompleted] = useState(false)
 
     const getTeilys = async () => {
         try {
@@ -28,7 +28,7 @@ function Teilys() {
             await deleteTeily(id)
             await getTeilys()
 
-        } catch (error){
+        } catch (error) {
             console.error("Error deleting teily: ", error)
         }
     }
@@ -43,7 +43,7 @@ function Teilys() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const teily: NewTeily = {task, completed };
+        const teily: NewTeily = { task, isCompleted };
 
         try {
             await createTeily(teily);  // Call the service method to create the Teily
