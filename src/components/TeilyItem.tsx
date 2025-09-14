@@ -30,27 +30,30 @@ const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelet
                 }}>
                 {task}
             </span>
-            <input
-                type="checkbox"
-                checked={completed}
-                onChange={handleCheckboxChange}
-                style={{ marginRight: '8px' }}
-            />
-            <button
-                onClick={handleDelete}
-                style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    marginLeft: 'auto',
-                    marginRight: '2px'
+            <div style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                marginLeft: 'auto',
+                marginRight: '2px'
 
-                }}
-                aria-label="Delete"
-                title="Delete"
-            >
-                <img src={deleteIcon} alt="Delete" width={20} height={20} />
-            </button>
+            }}>
+                <input
+                    type="checkbox"
+                    checked={completed}
+                    onChange={handleCheckboxChange}
+
+                />
+                <button
+                    onClick={handleDelete}
+                    style={{ 'background': 'none' }}
+
+                    aria-label="Delete"
+                    title="Delete"
+                >
+                    <img src={deleteIcon} alt="Delete" width={20} height={20} />
+                </button>
+            </div>
         </div>
     );
 };

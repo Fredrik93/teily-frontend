@@ -1,4 +1,4 @@
-import { Teily } from '../models/Teily';
+import { NewTeily, Teily } from '../models/Teily';
 
 // The local environment 
 //const API_URL = 'http://localhost:8080/teilys'
@@ -22,7 +22,7 @@ export const fetchTeilys = async (): Promise<Teily[]> => {
 
 
 // Create a new teily
-export const createTeily = async (teily: Teily) => {
+export const createTeily = async (teily: NewTeily) => {
     try {
         const response = await fetch(API_URL, {
             method: 'POST',

@@ -1,12 +1,11 @@
 import { useEffect, useState, Fragment } from 'react';
-import { Teily } from '../models/Teily';
+import { NewTeily, Teily } from '../models/Teily';
 import TeilyItem from './TeilyItem';
 import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/TeilyService';
 
 
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
-    const [id, setId] = useState("");
     const [task, setTask] = useState("");
     const [completed, setCompleted] = useState(false)
 
@@ -44,7 +43,7 @@ function Teilys() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const teily = { id, task, completed };
+        const teily: NewTeily = {task, completed };
 
         try {
             await createTeily(teily);  // Call the service method to create the Teily

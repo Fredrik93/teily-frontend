@@ -3,3 +3,5 @@ export interface Teily {
     task: string;
     completed: boolean;
 }
+
+export type NewTeily = Omit<Teily, 'id'>;
