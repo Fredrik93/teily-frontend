@@ -3,6 +3,7 @@ import { Teily } from '../models/Teily';
 import { NewTeily } from '../models/NewTeily';
 import TeilyItem from './TeilyItem';
 import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/TeilyService';
+import { auth } from '../login/firebase';
 
 
 function Teilys() {
@@ -11,8 +12,12 @@ function Teilys() {
     const [isCompleted, setCompleted] = useState(false)
 
     const getTeilys = async () => {
+        const user = auth.currentUser;
+        if (!user) throw new Error("Not logged in")
+
         try {
-            const data = await fetchTeilys();
+            const token = await user.getIdToken()
+            const data = await fetchTeilys(token);
             console.log("Fetched teilys", data);
             setTeilys(data);
         } catch (err) {
@@ -25,8 +30,12 @@ function Teilys() {
     }, []);
 
     const handleDelete = async (id: string) => {
+        const user = auth.currentUser;
+        if(!user) throw new Error("Not logged in")
+
         try {
-            await deleteTeily(id)
+            const token = await user.getIdToken()
+            await deleteTeily(token, id)
             await getTeilys()
 
         } catch (error) {
@@ -34,8 +43,12 @@ function Teilys() {
         }
     }
     const handleToggleCompleted = async (id: string, isCompleted: boolean) => {
+           const user = auth.currentUser;
+        if(!user) throw new Error("Not logged in")
+
         try {
-            await updateTeily(id, isCompleted); // Call the service method to update the Teily
+            const token = await user.getIdToken()
+            await updateTeily(token, id, isCompleted); // Call the service method to update the Teily
             await getTeilys(); // Refetch the list after updating a teily
         } catch (error) {
             console.error("Error updating teily:", error);
@@ -45,9 +58,12 @@ function Teilys() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const teily: NewTeily = { task };
-
+        const user = auth.currentUser;
+        if (!user) throw new Error("Not logged in")
+            const token = await user.getIdToken()
         try {
-            await createTeily(teily);  // Call the service method to create the Teily
+
+            await createTeily(token, teily);  // Call the service method to create the Teily
             setTask("");
             setCompleted(false);
             await getTeilys();  // Refetch the list after adding a new teily
@@ -66,9 +82,9 @@ function Teilys() {
             <div>
 
                 {teilys.map((teily, i) => (
-                    <TeilyItem key={i} teily={teily} 
-                    onToggleCompleted={handleToggleCompleted}
-                    onDelete={handleDelete} />
+                    <TeilyItem key={i} teily={teily}
+                        onToggleCompleted={handleToggleCompleted}
+                        onDelete={handleDelete} />
 
                 ))}
 

@@ -9,9 +9,13 @@ const API_URL = 'http://localhost:8080/teilys'
 
 
 // Fetch all teilys
-export const fetchTeilys = async (): Promise<Teily[]> => {
+export const fetchTeilys = async (userToken: string): Promise<Teily[]> => {
     try {
-        const res = await fetch(API_URL);
+        const res = await fetch(API_URL, {
+            headers:
+            // send token to backend 
+            {Authorization: `Bearer ${userToken}`}
+        });
         if (!res.ok) throw new Error('Failed to fetch teilys');
         return await res.json();
     } catch (error) {
@@ -22,12 +26,13 @@ export const fetchTeilys = async (): Promise<Teily[]> => {
 
 
 // Create a new teily
-export const createTeily = async (teily: NewTeily) => {
+export const createTeily = async (userToken: string, teily: NewTeily) => {
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${userToken}`
             },
             body: JSON.stringify(teily),
         });
@@ -46,12 +51,14 @@ export const createTeily = async (teily: NewTeily) => {
 
 
 // Update a teily's isCompleted status. 
-export const updateTeily = async (id: string, isCompleted: boolean) => {
+export const updateTeily = async (userToken: string, id: string, isCompleted: boolean) => {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'PATCH',
-            headers: {
+              headers: {
                 'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`
+
             },
             body: JSON.stringify(isCompleted),
         });
@@ -68,10 +75,16 @@ export const updateTeily = async (id: string, isCompleted: boolean) => {
     }
 };
 
-export const deleteTeily = async (id: string) => {
+export const deleteTeily = async (userToken: string, id: string) => {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'DELETE',
+             headers: {
+                'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`
+
+            },
+
         });
 
         if (!response.ok) {
