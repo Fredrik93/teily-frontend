@@ -12,7 +12,6 @@ interface TeilyItemProps {
 const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelete }) => {
     //destructure the teily object to get name and completed properties
     const { id, task, completed } = teily;
-    console.log("completed: " + completed + " for teily " + task)
     const handleCheckboxChange = () => {
         onToggleCompleted(id, !completed)
     };

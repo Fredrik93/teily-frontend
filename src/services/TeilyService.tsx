@@ -3,9 +3,9 @@ import { NewTeily } from '../models/NewTeily';
 import { auth } from '../login/firebase';
 
 // The local environment 
-const VITE_API_URL = 'http://localhost:8080/teilys'
+//const VITE_API_URL = 'http://localhost:8080/teilys'
 // The test environment 
-//const VITE_API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
+const VITE_API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
 // The production environment 
 //const VITE_API_URL = 'https://teily-backend.onrender.com/teilys';
 
