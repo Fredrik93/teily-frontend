@@ -1,20 +1,22 @@
-import {  Teily } from '../models/Teily';
+import { TeilyModel } from '../models/Teily';
 import { NewTeily } from '../models/NewTeily';
+import { auth } from '../login/firebase';
+
 // The local environment 
-const API_URL = 'http://localhost:8080/teilys'
+const VITE_API_URL = 'http://localhost:8080/teilys'
 // The test environment 
-//const API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
+//const VITE_API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
 // The production environment 
-//const API_URL = 'https://teily-backend.onrender.com/teilys';
+//const VITE_API_URL = 'https://teily-backend.onrender.com/teilys';
 
 
 // Fetch all teilys
-export const fetchTeilys = async (userToken: string): Promise<Teily[]> => {
+export const fetchTeilys = async (userToken: string): Promise<TeilyModel[]> => {
     try {
-        const res = await fetch(API_URL, {
+        const res = await fetch(VITE_API_URL, {
             headers:
-            // send token to backend 
-            {Authorization: `Bearer ${userToken}`}
+                // send token to backend 
+                { Authorization: `Bearer ${userToken}` }
         });
         if (!res.ok) throw new Error('Failed to fetch teilys');
         return await res.json();
@@ -24,11 +26,12 @@ export const fetchTeilys = async (userToken: string): Promise<Teily[]> => {
     }
 };
 
-
+// you stopped at setting env vars. didnt work. sucks. stupid env vars. you have deployed to render staging build, 
+// so now you want to push vercel using that api url and then test it all. 
 // Create a new teily
 export const createTeily = async (userToken: string, teily: NewTeily) => {
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(VITE_API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,11 +56,11 @@ export const createTeily = async (userToken: string, teily: NewTeily) => {
 // Update a teily's isCompleted status. 
 export const updateTeily = async (userToken: string, id: string, isCompleted: boolean) => {
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await fetch(`${VITE_API_URL}/${id}`, {
             method: 'PATCH',
-              headers: {
+            headers: {
                 'Content-Type': 'application/json',
-            Authorization: `Bearer ${userToken}`
+                Authorization: `Bearer ${userToken}`
 
             },
             body: JSON.stringify(isCompleted),
@@ -77,11 +80,11 @@ export const updateTeily = async (userToken: string, id: string, isCompleted: bo
 
 export const deleteTeily = async (userToken: string, id: string) => {
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await fetch(`${VITE_API_URL}/${id}`, {
             method: 'DELETE',
-             headers: {
+            headers: {
                 'Content-Type': 'application/json',
-            Authorization: `Bearer ${userToken}`
+                Authorization: `Bearer ${userToken}`
 
             },
 
@@ -98,12 +101,18 @@ export const deleteTeily = async (userToken: string, id: string) => {
         throw error;
     }
 };
- export const getTeilys = async () => {
-        try {
-            const data = await fetchTeilys();
-            console.log("Fetched teilys", data);
-            return await data
-        } catch (err) {
-            console.error("Component fetch error:", err);
-        }
-    };
+
+export const getTeilys = async () => {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Not logged in")
+
+    try {
+        const token = await user.getIdToken()
+        const data = await fetchTeilys(token);
+
+        console.log("Fetched teilys", data);
+        return await data
+    } catch (err) {
+        console.error("Component fetch error:", err);
+    }
+};

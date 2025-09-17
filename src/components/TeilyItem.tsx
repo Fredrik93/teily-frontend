@@ -4,7 +4,7 @@ import deleteIcon from '../assets/delete.svg';
 
 interface TeilyItemProps {
     teily: Teily;
-    onToggleCompleted: (id: string, isCompleted: boolean) => void; // Add callback prop
+    onToggleCompleted: (id: string, completed: boolean) => void; // Add callback prop
     onDelete: (id: string) => void
 
 }
@@ -12,7 +12,7 @@ interface TeilyItemProps {
 const TeilyItem: React.FC<TeilyItemProps> = ({ teily, onToggleCompleted, onDelete }) => {
     //destructure the teily object to get name and completed properties
     const { id, task, completed } = teily;
-
+    console.log("completed: " + completed + " for teily " + task)
     const handleCheckboxChange = () => {
         onToggleCompleted(id, !completed)
     };

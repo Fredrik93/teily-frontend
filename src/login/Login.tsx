@@ -37,17 +37,3 @@ export default function Login() {
   );
 }
 
-async function callBackend() {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  const token = await user.getIdToken();
-
-  const res = await fetch("http://localhost:8080/todos", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  const data = await res.json();
-  console.log(data);
-}

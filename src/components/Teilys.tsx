@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment } from 'react';
-import { Teily } from '../models/Teily';
+import { mapTeily, Teily } from '../models/Teily';
 import { NewTeily } from '../models/NewTeily';
 import TeilyItem from './TeilyItem';
 import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/TeilyService';
@@ -9,7 +9,6 @@ import { auth } from '../login/firebase';
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [task, setTask] = useState("");
-    const [isCompleted, setCompleted] = useState(false)
 
     const getTeilys = async () => {
         const user = auth.currentUser;
@@ -19,7 +18,8 @@ function Teilys() {
             const token = await user.getIdToken()
             const data = await fetchTeilys(token);
             console.log("Fetched teilys", data);
-            setTeilys(data);
+            setTeilys(data.map(mapTeily))
+            return data.map(mapTeily);
         } catch (err) {
             console.error("Component fetch error:", err);
         }
@@ -31,7 +31,7 @@ function Teilys() {
 
     const handleDelete = async (id: string) => {
         const user = auth.currentUser;
-        if(!user) throw new Error("Not logged in")
+        if (!user) throw new Error("Not logged in")
 
         try {
             const token = await user.getIdToken()
@@ -43,8 +43,8 @@ function Teilys() {
         }
     }
     const handleToggleCompleted = async (id: string, isCompleted: boolean) => {
-           const user = auth.currentUser;
-        if(!user) throw new Error("Not logged in")
+        const user = auth.currentUser;
+        if (!user) throw new Error("Not logged in")
 
         try {
             const token = await user.getIdToken()
@@ -60,12 +60,11 @@ function Teilys() {
         const teily: NewTeily = { task };
         const user = auth.currentUser;
         if (!user) throw new Error("Not logged in")
-            const token = await user.getIdToken()
+        const token = await user.getIdToken()
         try {
 
             await createTeily(token, teily);  // Call the service method to create the Teily
             setTask("");
-            setCompleted(false);
             await getTeilys();  // Refetch the list after adding a new teily
         } catch (error) {
             console.error("Error creating teily:", error);
