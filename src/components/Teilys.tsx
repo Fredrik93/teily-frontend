@@ -9,6 +9,7 @@ import { auth } from '../login/firebase';
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [task, setTask] = useState("");
+    const [completedTeilys, setCompletedTeilys] = useState<Teily[]>([])
 
     const getTeilys = async () => {
         const user = auth.currentUser;
@@ -50,6 +51,8 @@ function Teilys() {
             const token = await user.getIdToken()
             await updateTeily(token, id, isCompleted); // Call the service method to update the Teily
             await getTeilys(); // Refetch the list after updating a teily
+            // Update the list of completed teilys 
+            updateCompletedTeilys(teilys);
         } catch (error) {
             console.error("Error updating teily:", error);
         }
@@ -71,6 +74,10 @@ function Teilys() {
         }
     };
 
+    const updateCompletedTeilys = (teilys: Teily[]) => {
+        console.log("entered update teilys ", teilys)
+    }
+
     return (
         <Fragment>
             <form onSubmit={handleSubmit} className='space-y-4'>
@@ -79,17 +86,36 @@ function Teilys() {
                 <button type="submit">Create</button>
             </form>
             <div>
-
-                {teilys.map((teily, i) => (
-                    <TeilyItem key={i} teily={teily}
-                        onToggleCompleted={handleToggleCompleted}
-                        onDelete={handleDelete} />
-
-                ))}
-
+                <div>
+                    <h5> Todos </h5>
+                    {teilys
+                        .filter(teily => !teily.completed) // keep only not completed
+                        .map((teily, i) => (
+                            <TeilyItem
+                                key={i}
+                                teily={teily}
+                                onToggleCompleted={handleToggleCompleted}
+                                onDelete={handleDelete}
+                            />
+                        ))}
+                </div>
+                <div>
+                    <h5> Completed </h5>
+                    {teilys
+                        .filter(teily => teily.completed) // keep only not completed
+                        .map((teily, i) => (
+                            <TeilyItem
+                                key={i}
+                                teily={teily}
+                                onToggleCompleted={handleToggleCompleted}
+                                onDelete={handleDelete}
+                            />
+                        ))}
+                </div>
             </div>
         </Fragment>
     );
 }
+
 
 export default Teilys;

@@ -4,6 +4,10 @@
      1. $npm run build 
      2. vercel --prod 
      3. Yay    
+## Pushing to develop
+     1. $npm run build 
+     2. vercel 
+     
 
 ## Running the app: $npm run dev 
 
