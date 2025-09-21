@@ -52,7 +52,6 @@ function Teilys() {
             await updateTeily(token, id, isCompleted); // Call the service method to update the Teily
             await getTeilys(); // Refetch the list after updating a teily
             // Update the list of completed teilys 
-            updateCompletedTeilys(teilys);
         } catch (error) {
             console.error("Error updating teily:", error);
         }
@@ -87,6 +86,7 @@ function Teilys() {
             </form>
             <div>
                 <div>
+                    {/* If all todos are done show a message " youre done! " */}
                     <h5> Todos </h5>
                     {teilys
                         .filter(teily => !teily.completed) // keep only not completed
@@ -100,9 +100,10 @@ function Teilys() {
                         ))}
                 </div>
                 <div>
+                    
                     <h5> Completed </h5>
                     {teilys
-                        .filter(teily => teily.completed) // keep only not completed
+                        .filter(teily => teily.completed) // keep only completed
                         .map((teily, i) => (
                             <TeilyItem
                                 key={i}
