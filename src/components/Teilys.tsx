@@ -9,7 +9,6 @@ import { auth } from '../login/firebase';
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [task, setTask] = useState("");
-    const [completedTeilys, setCompletedTeilys] = useState<Teily[]>([])
 
     const getTeilys = async () => {
         const user = auth.currentUser;
@@ -72,10 +71,6 @@ function Teilys() {
             console.error("Error creating teily:", error);
         }
     };
-
-    const updateCompletedTeilys = (teilys: Teily[]) => {
-        console.log("entered update teilys ", teilys)
-    }
 
     return (
         <Fragment>
