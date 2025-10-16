@@ -5,7 +5,6 @@ import { useAuthState } from './login/AuthProvider'
 import Login from './login/Login'
 import { signOut } from 'firebase/auth'
 import { auth } from './login/firebase'
-import ConnectionToBackend from './components/ConnectionToBackend'
 
 function App() {
   const { user, loading } = useAuthState();
@@ -14,7 +13,6 @@ function App() {
   if (!user) { return <Login /> } else {
     return (
       <Fragment>
-        <ConnectionToBackend />
         <Teilys />
         <button onClick={() => signOut(auth)}>Logout</button>
 

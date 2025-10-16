@@ -3,7 +3,7 @@ import { NewTeily } from '../models/NewTeily';
 import { auth } from '../login/firebase';
 
 // The local environment 
-const VITE_API_URL = 'http://localhost:8080/teilys'
+export const VITE_API_URL = 'http://localhost:8080/teilys'
 // The test environment 
 //const VITE_API_URL = 'https://teily-backend-0-1.onrender.com/teilys';
 // The production environment 
@@ -114,5 +114,20 @@ export const getTeilys = async () => {
         return await data
     } catch (err) {
         console.error("Component fetch error:", err);
+    }
+};
+
+export const pingServer = async (timeout = 3000): Promise<boolean> => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const res = await fetch(VITE_API_URL,
+            { method: 'GET', signal: controller.signal });
+        clearTimeout(id);
+        return res.ok;
+    } catch (err) {
+        clearTimeout(id);
+        return false;
     }
 };

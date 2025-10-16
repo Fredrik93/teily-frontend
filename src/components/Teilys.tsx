@@ -2,13 +2,15 @@ import { useEffect, useState, Fragment } from 'react';
 import { mapTeily, Teily } from '../models/Teily';
 import { NewTeily } from '../models/NewTeily';
 import TeilyItem from './TeilyItem';
-import { fetchTeilys, createTeily, updateTeily, deleteTeily } from '../services/TeilyService';
+import { fetchTeilys, createTeily, updateTeily, deleteTeily, pingServer } from '../services/TeilyService';
 import { auth } from '../login/firebase';
 
 
 function Teilys() {
     const [teilys, setTeilys] = useState<Teily[]>([]);
     const [task, setTask] = useState("");
+    const [serverStatus, setServerStatus] = useState<'connecting' | 'connected' | null>(null);
+
 
     const getTeilys = async () => {
         const user = auth.currentUser;
@@ -25,8 +27,35 @@ function Teilys() {
         }
     };
 
+
     useEffect(() => {
-        getTeilys();
+        let mounted = true;
+
+        const check = async () => {
+            if (!mounted) return;
+            setServerStatus('connecting'); // show pink
+            const ok = await pingServer();
+            if (!mounted) return;
+
+            if (ok) {
+                setServerStatus('connected'); // show green
+                // disappear after short delay
+                setTimeout(() => {
+                    if (mounted) setServerStatus(null);
+                }, 1200);
+            } else {
+                // keep showing "connecting" (pink) until next poll
+                setServerStatus('connecting');
+            }
+        };
+
+        check();
+        const interval = setInterval(check, 10000); // poll every 10s
+
+        return () => {
+            mounted = false;
+            clearInterval(interval);
+        };
     }, []);
 
     const handleDelete = async (id: string) => {
@@ -74,6 +103,21 @@ function Teilys() {
 
     return (
         <Fragment>
+            {serverStatus && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '6px 8px',
+                    textAlign: 'center',
+                    zIndex: 9999,
+                    background: serverStatus === 'connected' ? '#c8e6c9' /* green */ : '#ffb6c1' /* pink */,
+                    color: '#000'
+                }}>
+                    {serverStatus === 'connected' ? 'Connected' : 'Connecting to server'}
+                </div>
+            )}
             <form onSubmit={handleSubmit} className='space-y-4'>
                 <input type="text" placeholder='A teily' value={task} onChange={(e) => setTask(e.target.value)}
                     required />
@@ -95,7 +139,7 @@ function Teilys() {
                         ))}
                 </div>
                 <div>
-                    
+
                     <h5> Completed </h5>
                     {teilys
                         .filter(teily => teily.completed) // keep only completed
