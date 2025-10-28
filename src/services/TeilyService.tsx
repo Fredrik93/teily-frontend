@@ -2,6 +2,8 @@ import { TeilyModel } from '../models/Teily';
 import { NewTeily } from '../models/NewTeily';
 import { auth } from '../login/firebase';
 
+
+const PING_ENDPOINT = "/ping"
 // The local environment 
 export const VITE_API_URL = 'http://localhost:8080/teilys'
 // The test environment 
@@ -122,7 +124,7 @@ export const pingServer = async (timeout = 3000): Promise<boolean> => {
     const id = setTimeout(() => controller.abort(), timeout);
 
     try {
-        const res = await fetch(VITE_API_URL,
+        const res = await fetch(VITE_API_URL + PING_ENDPOINT,
             { method: 'GET', signal: controller.signal });
         clearTimeout(id);
         return res.ok;

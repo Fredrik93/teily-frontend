@@ -35,11 +35,13 @@ function Teilys() {
             if (!mounted) return;
             setServerStatus('connecting'); // show pink
             const ok = await pingServer();
+            console.log("connecting ... ")
             if (!mounted) return;
 
             if (ok) {
                 setServerStatus('connected'); // show green
                 // disappear after short delay
+                console.log("connected to server!")
                 setTimeout(() => {
                     if (mounted) setServerStatus(null);
                 }, 1200);
