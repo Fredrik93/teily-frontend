@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import {auth} from "./firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { pingServer } from "../services/TeilyService";
+import ServerStatusBanner from "../components/ServerStatusBanner";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -54,21 +55,7 @@ export default function Login() {
 
   return (
     <Fragment>
-       {serverStatus && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '6px 8px',
-                    textAlign: 'center',
-                    zIndex: 9999,
-                    background: serverStatus === 'connected' ? '#c8e6c9' /* green */ : '#ffb6c1' /* pink */,
-                    color: '#000'
-                }}>
-                    {serverStatus === 'connected' ? 'Connected' : 'Connecting to server'}
-                </div>
-            )}
+       <ServerStatusBanner serverStatus={serverStatus} />
     <div>
       <h2>Login / Register</h2>
       <input

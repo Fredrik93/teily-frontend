@@ -4,6 +4,7 @@ import { NewTeily } from '../models/NewTeily';
 import TeilyItem from './TeilyItem';
 import { fetchTeilys, createTeily, updateTeily, deleteTeily, pingServer } from '../services/TeilyService';
 import { auth } from '../login/firebase';
+import ServerStatusBanner from './ServerStatusBanner';
 
 
 function Teilys() {
@@ -105,21 +106,8 @@ function Teilys() {
 
     return (
         <Fragment>
-            {serverStatus && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '6px 8px',
-                    textAlign: 'center',
-                    zIndex: 9999,
-                    background: serverStatus === 'connected' ? '#c8e6c9' /* green */ : '#ffb6c1' /* pink */,
-                    color: '#000'
-                }}>
-                    {serverStatus === 'connected' ? 'Connected' : 'Connecting to server'}
-                </div>
-            )}
+            
+            <ServerStatusBanner serverStatus={serverStatus}/>
             <form onSubmit={handleSubmit} className='space-y-4'>
                 <input type="text" placeholder='A teily' value={task} onChange={(e) => setTask(e.target.value)}
                     required />
